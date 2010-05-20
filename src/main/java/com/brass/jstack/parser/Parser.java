@@ -22,20 +22,20 @@ public class Parser {
             FileInputStream fstream;
             fstream = new FileInputStream(_file);
 
-            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fstream));
 
             boolean finishedHeader = false;
             JStackEntry currentEntry = new JStackEntry("");
 
-            while (in.available() !=0)
+            String line;
+            while ((line = in.readLine()) != null)
             {
-                final String line = in.readLine() + "\n";
-
                 // Skip blanks
                 if ("".equals(line.trim())) {
                     continue;
                 }
 
+                line += "\n";
 
                 // Check if we're done with the header lines
                 if (!finishedHeader && line.startsWith("Thread")) {
@@ -50,9 +50,10 @@ public class Parser {
                 if (line.startsWith("Thread")) {
                     currentEntry = new JStackEntry(line);
                     _meta.addEntry(currentEntry);
+                } else {
+                    currentEntry.append(line);
                 }
 
-                currentEntry.append(line);
             }
 
             in.close();
