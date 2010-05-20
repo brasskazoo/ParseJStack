@@ -8,4 +8,6 @@ import java.util.List;
 public class JStackMeta {
     private StringBuilder _header;
     private List<JStackEntry> _entries;
+
+    
 }

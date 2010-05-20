@@ -1,5 +1,6 @@
-package com.brass.jstack;
+package com.brass;
 
+import com.brass.jstack.JStackEntry;
 import org.junit.Assert;
 import org.junit.Test;
 
