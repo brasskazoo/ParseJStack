@@ -1,5 +1,8 @@
 package com.brass.jstack.parser;
 
+import com.brass.jstack.JStackEntry;
+import com.brass.jstack.JStackMeta;
+
 import java.io.*;
 
 /**
@@ -7,22 +10,48 @@ import java.io.*;
  */
 public class Parser {
     private final File _file;
+    private final JStackMeta _meta;
 
     public Parser(final File file) {
         _file = file;
+        _meta = new JStackMeta();
     }
 
-    public void process() {
+    public JStackMeta process() {
         try {
             FileInputStream fstream;
             fstream = new FileInputStream(_file);
 
             DataInputStream in = new DataInputStream(fstream);
 
+            boolean finishedHeader = false;
+            JStackEntry currentEntry = new JStackEntry();
+
             while (in.available() !=0)
             {
-                // Print file line to screen
-                System.out.println (in.readLine());
+                final String line = in.readLine();
+
+                // Skip blanks
+                if ("".equals(line.trim())) {
+                    continue;
+                }
+
+                // Check if we're done with the header lines
+                if (!finishedHeader && line.startsWith("Thread")) {
+                    finishedHeader = true;
+                }
+
+                if (!finishedHeader) {
+                    _meta.append(line);
+                    continue;
+                }
+
+                if (line.startsWith("Thread")) {
+                    currentEntry = new JStackEntry();
+                    _meta.addEntry(currentEntry);
+                }
+
+                currentEntry.append(line);
             }
 
             in.close();
@@ -31,6 +60,8 @@ public class Parser {
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }        
+        }
+
+        return _meta;
     }
 }
