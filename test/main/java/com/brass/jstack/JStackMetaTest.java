@@ -32,7 +32,7 @@ public class JStackMetaTest {
     public void testAddEmptyEntry() throws Exception {
         final JStackMeta stackMeta = new JStackMeta();
         stackMeta.addEntry(new JStackEntry());
-        Assert.assertEquals(0, stackMeta.getEntries().size());
+        Assert.assertEquals(1, stackMeta.getEntries().size());
     }
 
 

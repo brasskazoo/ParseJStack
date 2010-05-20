@@ -28,7 +28,7 @@ public class JStackMeta {
     }
 
     public void addEntry(final JStackEntry jStackEntry) {
-        if (jStackEntry == null || jStackEntry.getContents().length() == 0) {
+        if (jStackEntry == null) {
             return;
         }
         _entries.add(jStackEntry);
