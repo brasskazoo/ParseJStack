@@ -8,15 +8,15 @@ package com.brass.jstack;
 public class JStackEntry {
     final private StringBuilder _contents;
 
-    public JStackEntry(final StringBuilder contents) {
-        if (contents == null) {
-            _contents = new StringBuilder();
-        } else {
-            _contents = contents;
-        }
+    public JStackEntry() {
+        _contents = new StringBuilder();
     }
 
     public StringBuilder getContents() {
         return _contents;
+    }
+
+    public void append(String line) {
+        _contents.append(line);
     }
 }

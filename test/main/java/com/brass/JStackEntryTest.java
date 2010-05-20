@@ -10,15 +10,16 @@ import org.junit.Test;
 public class JStackEntryTest {
     @Test
     public void testShouldGetContentsAsNotNullWhenNullParameter() throws Exception {
-        final JStackEntry stackEntry = new JStackEntry(null);
+        final JStackEntry stackEntry = new JStackEntry();
         Assert.assertNotNull(stackEntry.getContents());
     }
 
     @Test
     public void shouldGetSameContentsAsConstructorParam() throws Exception {
-        final StringBuilder contents = new StringBuilder();
-        contents.append("Test Content");
-        final JStackEntry stackEntry = new JStackEntry(contents);
-        Assert.assertEquals(stackEntry.getContents(), contents);
+        final JStackEntry stackEntry = new JStackEntry();
+        stackEntry.append("Test Content");
+
+        Assert.assertEquals(12, stackEntry.getContents().length());
+        Assert.assertEquals("Test Content", stackEntry.getContents().toString());
     }
 }
