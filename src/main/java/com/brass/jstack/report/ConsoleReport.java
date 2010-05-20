@@ -5,12 +5,13 @@ import com.brass.jstack.JStackMeta;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ConsoleReport implements Report {
 
     public void buildReport(final JStackMeta stackMeta) {
         Map<String, Integer> stateCountMap = new HashMap<String, Integer>();
-        Map<String, Integer> messageCountMap = new HashMap<String, Integer>();
+        Map<String, Integer> messageCountMap = new TreeMap<String, Integer>();  // Sorted
 
         // Report on results
         for (int i = 0; i < stackMeta.getEntries().size(); i++) {
@@ -52,7 +53,7 @@ public class ConsoleReport implements Report {
 
         // Message counts
         for (Map.Entry<String, Integer> entry : messageCountMap.entrySet()) {
-            System.out.println(entry.getValue() + " threads at " + entry.getKey());
+            System.out.println(entry.getValue() + "\tthreads at " + entry.getKey());
         }
     }
 }
