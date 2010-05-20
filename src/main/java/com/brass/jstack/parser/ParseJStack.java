@@ -19,7 +19,7 @@ public class ParseJStack {
         }
         final JStackMeta stackMeta = new Parser(jstackFile).process();
 
-        HashMap<String, Integer> countMap = new HashMap<String, Integer>();
+        Map<String, Integer> stateCountMap = new HashMap<String, Integer>();
 
         for (int i = 0; i < stackMeta.getEntries().size(); i++) {
             JStackEntry entry = stackMeta.getEntries().get(i);
@@ -27,19 +27,18 @@ public class ParseJStack {
             final String state = entry.getState();
 
             final Integer count;
-            if (countMap.containsKey(state)) {
-                count = countMap.get(state) + 1;
+            if (stateCountMap.containsKey(state)) {
+                count = stateCountMap.get(state) + 1;
             } else {
                 count = 1;
             }
 
-            countMap.put(state, count);
+            stateCountMap.put(state, count);
         }
 
-        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : stateCountMap.entrySet()) {
             System.out.println(entry.getValue() + " threads at " + entry.getKey());
         }
-
     }
 
 
