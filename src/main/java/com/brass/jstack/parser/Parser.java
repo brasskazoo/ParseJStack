@@ -29,12 +29,13 @@ public class Parser {
 
             while (in.available() !=0)
             {
-                final String line = in.readLine();
+                final String line = in.readLine() + "\n";
 
                 // Skip blanks
                 if ("".equals(line.trim())) {
                     continue;
                 }
+
 
                 // Check if we're done with the header lines
                 if (!finishedHeader && line.startsWith("Thread")) {
