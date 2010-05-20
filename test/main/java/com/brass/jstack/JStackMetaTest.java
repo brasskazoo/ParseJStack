@@ -31,7 +31,7 @@ public class JStackMetaTest {
     @Test
     public void testAddEmptyEntry() throws Exception {
         final JStackMeta stackMeta = new JStackMeta();
-        stackMeta.addEntry(new JStackEntry());
+        stackMeta.addEntry(new JStackEntry(""));
         Assert.assertEquals(1, stackMeta.getEntries().size());
     }
 
@@ -39,7 +39,7 @@ public class JStackMetaTest {
     @Test
     public void testAddEntry() throws Exception {
         final JStackMeta stackMeta = new JStackMeta();
-        final JStackEntry stackEntry = new JStackEntry();
+        final JStackEntry stackEntry = new JStackEntry("");
         stackEntry.append("Test Entry");
         stackMeta.addEntry(stackEntry);
         Assert.assertEquals(1, stackMeta.getEntries().size());

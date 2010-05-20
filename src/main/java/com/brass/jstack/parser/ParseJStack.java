@@ -1,6 +1,11 @@
 package com.brass.jstack.parser;
 
+import com.brass.jstack.JStackEntry;
+import com.brass.jstack.JStackMeta;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author willdampney
@@ -12,7 +17,29 @@ public class ParseJStack {
             System.out.println("File does not exist. Exiting.");
             return;
         }
-        new Parser(jstackFile).process();
+        final JStackMeta stackMeta = new Parser(jstackFile).process();
+
+        HashMap<String, Integer> countMap = new HashMap<String, Integer>();
+
+        for (int i = 0; i < stackMeta.getEntries().size(); i++) {
+            JStackEntry entry = stackMeta.getEntries().get(i);
+
+            final String state = entry.getState();
+
+            final Integer count;
+            if (countMap.containsKey(state)) {
+                count = countMap.get(state) + 1;
+            } else {
+                count = 1;
+            }
+
+            countMap.put(state, count);
+        }
+
+        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            System.out.println(entry.getValue() + " threads at " + entry.getKey());
+        }
+
     }
 
 

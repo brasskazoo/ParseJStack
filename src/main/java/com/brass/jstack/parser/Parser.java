@@ -25,7 +25,7 @@ public class Parser {
             DataInputStream in = new DataInputStream(fstream);
 
             boolean finishedHeader = false;
-            JStackEntry currentEntry = new JStackEntry();
+            JStackEntry currentEntry = new JStackEntry("");
 
             while (in.available() !=0)
             {
@@ -48,7 +48,7 @@ public class Parser {
                 }
 
                 if (line.startsWith("Thread")) {
-                    currentEntry = new JStackEntry();
+                    currentEntry = new JStackEntry(line);
                     _meta.addEntry(currentEntry);
                 }
 
