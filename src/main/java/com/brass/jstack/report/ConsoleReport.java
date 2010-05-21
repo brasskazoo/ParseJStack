@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Process the {@link com.brass.jstack.JStackMeta} object and write the results to the console.
+ * 
+ * @author Will
+ */
 public class ConsoleReport implements Report {
 
     public void buildReport(final JStackMeta stackMeta) {

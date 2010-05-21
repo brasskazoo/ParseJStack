@@ -4,9 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Contains the individual thread dump of a JStack trace
+ * Contains the individual thread dump of a JStack trace, and the header line.
+ *
+ * The header line contains the thread state (blocked, in_native, etc), and the <code>getState()</code> function performs the processing to extract the thread state.
  * 
- * @author willdampney
+ * @author Will
  */
 public class JStackEntry {
     final private StringBuilder _contents;
@@ -16,10 +18,6 @@ public class JStackEntry {
         //TODO handle null/empty
         _header = line;
         _contents = new StringBuilder();
-    }
-
-    public String getHeader() {
-        return _header;
     }
 
     public StringBuilder getContents() {

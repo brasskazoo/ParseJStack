@@ -7,7 +7,9 @@ import com.brass.jstack.report.Report;
 import java.io.File;
 
 /**
- * @author willdampney
+ * Currently, the program handles one argument, which is the path to a jstack output file.
+ *
+ * @author Will 
  */
 public class ParseJStack {
 
@@ -17,8 +19,10 @@ public class ParseJStack {
             System.out.println("File does not exist. Exiting.");
             return;
         }
+
         final JStackMeta stackMeta = new Parser(jstackFile).process();
 
+        //TODO Allow selection of report
         final Report report = new ConsoleReport();
         report.buildReport(stackMeta);
     }

@@ -6,7 +6,9 @@ import com.brass.jstack.JStackMeta;
 import java.io.*;
 
 /**
- * @author willdampney
+ * Provides the parsing engine to extract the information from the JStack output.
+ *
+ * @author Will
  */
 public class Parser {
     private final File _file;
@@ -17,12 +19,17 @@ public class Parser {
         _meta = new JStackMeta();
     }
 
+    /**
+     * Process the JStack output file and extract the data into a {@link com.brass.jstack.JStackMeta} object.
+     *
+     * @return The {@link com.brass.jstack.JStackMeta} object representing the JStack output.
+     */
     public JStackMeta process() {
         try {
-            FileInputStream fstream;
-            fstream = new FileInputStream(_file);
+            FileInputStream inputStream;
+            inputStream = new FileInputStream(_file);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(fstream));
+            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
             boolean finishedHeader = false;
             JStackEntry currentEntry = new JStackEntry("");
@@ -58,9 +65,9 @@ public class Parser {
 
             in.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-
+            System.out.println("ERROR: File was not found");
         } catch (IOException e) {
+            System.out.println("ERROR: A problem occurred");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 

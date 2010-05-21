@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author willdampney
+ * Container for data extracted from a JStack output file.
+ * 
+ * @author Will
  */
 public class JStackMeta {
     private StringBuilder _header;

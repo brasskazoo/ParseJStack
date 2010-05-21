@@ -8,7 +8,7 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * @author willdampney
+ * @author Will
  */
 public class ParserTest {
     @Test
