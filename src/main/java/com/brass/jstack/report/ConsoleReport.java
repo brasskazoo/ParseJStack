@@ -35,18 +35,21 @@ public class ConsoleReport implements Report {
 
 
             final StringBuilder contents = entry.getContents();
+            final String strStackEnd;
             if (contents.length() != 0) {
-                final String strStackEnd = "(" + state + ") " + contents.substring(0, contents.indexOf("\n"));
-
-                final Integer countMessage;
-                if (messageCountMap.containsKey(strStackEnd)) {
-                    countMessage = messageCountMap.get(strStackEnd) + 1;
-                } else {
-                    countMessage = 1;
-                }
-
-                messageCountMap.put(strStackEnd, countMessage);
+                strStackEnd = "(" + state + ") " + contents.substring(0, contents.indexOf("\n"));
+            } else {
+                strStackEnd = "(" + state + ") " + "[No stacktrace]";
             }
+
+            final Integer countMessage;
+            if (messageCountMap.containsKey(strStackEnd)) {
+                countMessage = messageCountMap.get(strStackEnd) + 1;
+            } else {
+                countMessage = 1;
+            }
+
+            messageCountMap.put(strStackEnd, countMessage);
         }
 
         // State counts
