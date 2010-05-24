@@ -40,14 +40,12 @@ public class JStackEntry implements Comparable {
 
         Matcher m = Pattern.compile(".+\\(state = (\\w+)\\).*").matcher(_header);
 
-        String strState = "x";
+        String strState = "UNKNOWN";
 
         if (m.find()) {
             if (m.groupCount() > 0) {
                 strState = m.group(1);
             }
-        } else {
-            strState = "UNKNOWN";
         }
 
         return strState;
