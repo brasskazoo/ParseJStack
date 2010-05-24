@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * 
  * @author Will
  */
-public class JStackEntry {
+public class JStackEntry implements Comparable {
     final private StringBuilder _contents;
     private final String _header;
 
@@ -38,17 +38,36 @@ public class JStackEntry {
             return "UNKNOWN";
         }
 
-        Matcher m = Pattern.compile(".*\\(state = (\\w+)\\).*").matcher(_header);
+        Matcher m = Pattern.compile(".+\\(state = (\\w+)\\).*").matcher(_header);
 
-        m.find();
+        String strState = "x";
 
-        final String strState;
-        if (m.groupCount() > 0) {
-            strState = m.group(1);
+        if (m.find()) {
+            if (m.groupCount() > 0) {
+                strState = m.group(1);
+            }
         } else {
             strState = "UNKNOWN";
         }
 
         return strState;
+    }
+
+    @Override
+    public int hashCode() {
+        return getState().hashCode() * 31 + getContents().toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        return !(!(o instanceof JStackEntry)) && this.hashCode() == o.hashCode();
+    }
+
+    public int compareTo(final Object o) {
+        if (this.equals(o)) {
+            return 0;
+        } else {
+            return this.hashCode() > o.hashCode() ? 1 : -1;
+        }
     }
 }
