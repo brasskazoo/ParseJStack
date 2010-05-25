@@ -68,7 +68,7 @@ public class Parser {
             System.out.println("ERROR: File was not found");
         } catch (IOException e) {
             System.out.println("ERROR: A problem occurred");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace(); 
         }
 
         return _meta;

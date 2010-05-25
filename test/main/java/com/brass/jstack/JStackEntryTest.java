@@ -14,7 +14,7 @@ public class JStackEntryTest {
     }
 
     @Test
-    public void shouldGetSameContentsAsConstructorParam() throws Exception {
+    public void shouldGetContents() throws Exception {
         final JStackEntry stackEntry = new JStackEntry("");
         stackEntry.append("Test Content");
 
