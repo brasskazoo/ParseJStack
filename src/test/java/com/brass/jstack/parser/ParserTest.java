@@ -13,7 +13,7 @@ import java.net.URL;
 public class ParserTest {
     @Test
     public void testProcess() throws Exception {
-        final URL resource = getClass().getResource("test.jstack");
+        final URL resource = getClass().getResource("/test.jstack");
         final File file = new File(resource.getFile());
 
         final JStackMeta stackMeta = new Parser(file).process();
