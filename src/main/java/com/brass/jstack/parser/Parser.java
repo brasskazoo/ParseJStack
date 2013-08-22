@@ -1,76 +1,89 @@
 package com.brass.jstack.parser;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.regex.Pattern;
+
 import com.brass.jstack.JStackEntry;
 import com.brass.jstack.JStackMeta;
 
-import java.io.*;
-
 /**
  * Provides the parsing engine to extract the information from the JStack output.
- *
+ * 
  * @author Will
  */
 public class Parser {
-    private final File _file;
-    private final JStackMeta _meta;
+	private final File _file;
+	private final JStackMeta _meta;
 
-    public Parser(final File file) {
-        _file = file;
-        _meta = new JStackMeta();
-    }
+	private static final String THREAD_NAME_REGEX = "\\\"([^\"]+)\\\".*";
+	private static final Pattern THREAD_NAME_PATTERN = Pattern.compile(THREAD_NAME_REGEX);
 
-    /**
-     * Process the JStack output file and extract the data into a {@link com.brass.jstack.JStackMeta} object.
-     *
-     * @return The {@link com.brass.jstack.JStackMeta} object representing the JStack output.
-     */
-    public JStackMeta process() {
-        try {
-            FileInputStream inputStream;
-            inputStream = new FileInputStream(_file);
+	public Parser(final File file) {
+		_file = file;
+		_meta = new JStackMeta();
+	}
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+	public boolean isNewThreadStart(final String line) {
+		return THREAD_NAME_PATTERN.matcher(line).find();
+	}
 
-            boolean finishedHeader = false;
-            JStackEntry currentEntry = new JStackEntry("");
+	/**
+	 * Process the JStack output file and extract the data into a
+	 * {@link com.brass.jstack.JStackMeta} object.
+	 * 
+	 * @return The {@link com.brass.jstack.JStackMeta} object representing the JStack output.
+	 */
+	public JStackMeta process() {
+		try {
+			FileInputStream inputStream;
+			inputStream = new FileInputStream(_file);
 
-            String line;
-            while ((line = in.readLine()) != null)
-            {
-                // Skip blanks
-                if ("".equals(line.trim())) {
-                    continue;
-                }
+			final BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
-                line += "\n";
+			boolean finishedHeader = false;
+			JStackEntry currentEntry = new JStackEntry("");
 
-                // Check if we're done with the header lines
-                if (!finishedHeader && line.startsWith("Thread")) {
-                    finishedHeader = true;
-                }
+			String line;
+			while ((line = in.readLine()) != null) {
+				// Skip blanks
+				if ("".equals(line.trim())) {
+					continue;
+				}
 
-                if (!finishedHeader) {
-                    _meta.append(line);
-                    continue;
-                }
+				line += "\n";
 
-                if (line.startsWith("Thread")) {
-                    currentEntry = new JStackEntry(line);
-                    _meta.addEntry(currentEntry);
-                } else {
-                    currentEntry.append(line);
-                }
+				// Check if we're done with the header lines
+				if (!finishedHeader && isNewThreadStart(line)) {
+					finishedHeader = true;
+				}
 
-            }
+				if (!finishedHeader) {
+					_meta.append(line);
+					continue;
+				}
 
-            in.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("ERROR: File was not found");
-        } catch (IOException e) {
-            System.out.println("ERROR: A problem occurred");
-            e.printStackTrace(); 
-        }
+				if (isNewThreadStart(line)) {
+					currentEntry = new JStackEntry(line);
+					_meta.addEntry(currentEntry);
+				} else {
+					currentEntry.append(line);
+				}
 
-        return _meta;
-    }
+			}
+
+			in.close();
+		} catch (final FileNotFoundException e) {
+			System.out.println("ERROR: File was not found");
+		} catch (final IOException e) {
+			System.out.println("ERROR: A problem occurred");
+			e.printStackTrace();
+		}
+
+		return _meta;
+	}
 }
