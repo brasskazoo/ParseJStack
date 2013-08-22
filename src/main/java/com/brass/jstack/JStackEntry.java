@@ -13,10 +13,6 @@ import java.util.regex.Pattern;
  */
 public class JStackEntry implements Comparable<JStackEntry> {
 
-	public enum JStackEntryState {
-		NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED, UNKNOWN
-	}
-
 	private static final String STATE_REGEX = "\\s*java.lang.Thread.State:\\s+(\\w+)\\s*\\(*.*\\)*";
 	private static final Pattern STATE_PATTERN = Pattern.compile(STATE_REGEX);
 
@@ -26,7 +22,7 @@ public class JStackEntry implements Comparable<JStackEntry> {
 	private final StringBuilder _contents;
 	private final String _header;
 
-	private final JStackEntryState _state;
+	private final Thread.State _state;
 
 	public JStackEntry(final String line) {
 		_header = Objects.requireNonNull(line, "JStack entry line cannot be null");
@@ -82,13 +78,13 @@ public class JStackEntry implements Comparable<JStackEntry> {
 		return true;
 	}
 
-	private JStackEntryState extractJStackEntryState() {
-		JStackEntryState st = JStackEntryState.UNKNOWN;
+	private Thread.State extractJStackEntryState() {
+		Thread.State st = null;
 		final Matcher m = STATE_PATTERN.matcher(_header);
 		if (m.find()) {
 			if (m.groupCount() > 0) {
 				final String strState = m.group(1);
-				st = JStackEntryState.valueOf(strState);
+				st = Thread.State.valueOf(strState);
 			}
 		}
 		return st;
@@ -103,7 +99,7 @@ public class JStackEntry implements Comparable<JStackEntry> {
 	 * 
 	 * @return The reported state, or 'UNKNOWN' if it is not found.
 	 */
-	public JStackEntryState getState() {
+	public Thread.State getState() {
 		return _state;
 	}
 

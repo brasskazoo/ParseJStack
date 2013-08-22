@@ -1,7 +1,6 @@
 package com.brass.jstack;
 
-import static com.brass.jstack.JStackEntry.JStackEntryState.BLOCKED;
-import static com.brass.jstack.JStackEntry.JStackEntryState.UNKNOWN;
+import static java.lang.Thread.State.BLOCKED;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,19 +33,19 @@ public class JStackEntryTest {
 	}
 
 	@Test
-	public void shouldGetUnknownStateWhenHeaderEmpty() throws Exception {
+	public void shouldGetNullStateWhenHeaderEmpty() throws Exception {
 		final JStackEntry stackEntry = new JStackEntry("");
 		stackEntry.append("Test Content");
 
-		Assert.assertEquals(UNKNOWN, stackEntry.getState());
+		Assert.assertNull(stackEntry.getState());
 	}
 
 	@Test
-	public void shouldGetUnknownStateWhenHeaderUnrecognised() throws Exception {
+	public void shouldGetNullStateWhenHeaderUnrecognised() throws Exception {
 		final JStackEntry stackEntry = new JStackEntry("Thread t@6872:");
 		stackEntry.append("Test Content");
 
-		Assert.assertEquals(UNKNOWN, stackEntry.getState());
+		Assert.assertNull(stackEntry.getState());
 	}
 
 	@Test
