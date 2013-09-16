@@ -1,6 +1,4 @@
-package com.brass.jstack;
-
-import static java.lang.Thread.State.BLOCKED;
+package br.com.atech.commons.jstack;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,10 +18,10 @@ public class JStackEntryTest {
 
 	@Test
 	public void shouldGetEntryState() throws Exception {
-		final JStackEntry stackEntry = new JStackEntry("java.lang.Thread.State: BLOCKED (on object monitor)");
-		stackEntry.append("Test Content");
+		final JStackEntry stackEntry = new JStackEntry("Entry header");
+		stackEntry.append("java.lang.Thread.State: BLOCKED (on object monitor)");
 
-		Assert.assertEquals(BLOCKED, stackEntry.getState());
+		Assert.assertEquals("BLOCKED", stackEntry.getState());
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -33,19 +31,19 @@ public class JStackEntryTest {
 	}
 
 	@Test
-	public void shouldGetNullStateWhenHeaderEmpty() throws Exception {
+	public void shouldGetUnknownStateWhenHeaderEmpty() throws Exception {
 		final JStackEntry stackEntry = new JStackEntry("");
 		stackEntry.append("Test Content");
 
-		Assert.assertNull(stackEntry.getState());
+		Assert.assertEquals("UNKNOWN", stackEntry.getState());
 	}
 
 	@Test
-	public void shouldGetNullStateWhenHeaderUnrecognised() throws Exception {
+	public void shouldGetUnknownStateWhenHeaderUnrecognised() throws Exception {
 		final JStackEntry stackEntry = new JStackEntry("Thread t@6872:");
 		stackEntry.append("Test Content");
 
-		Assert.assertNull(stackEntry.getState());
+		Assert.assertEquals("UNKNOWN", stackEntry.getState());
 	}
 
 	@Test
